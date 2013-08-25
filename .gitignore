@@ -1,0 +1,5 @@
+*.db
+*.dat
+*.pyc
+*.log
+memo.txt
