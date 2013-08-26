@@ -1,5 +1,6 @@
 from googleCalendar import GoogleCalendar
 from twitterConnect import TwitterConnect
+from t2gcAccount import T2gcAccount
 from ns import *
 
 if __name__ == '__main__':
@@ -9,22 +10,23 @@ if __name__ == '__main__':
     gc = GoogleCalendar()
     gc.connect()
     t = TwitterConnect()
+    t2gc_account = T2gcAccount()
 
     def loop():
-        for dic in t.connectStream():
-            if dic == 'error':
+        for info in t.connectStream():
+            if info == 'error':
                 return loop()
-            print dic
-            res = gc.createEvent(dic)
+            res = gc.createEvent(info[1])
             if not res:
                 with open(logfile, 'a') as f:
                     now = nowtime()
                     f.write(now + ' failed event insert. reconnect.\n')
-                gc.createEvent(dic)
+                res = gc.createEvent(info[1])
             else:
                 with open(logfile, 'a') as f:
                     now = nowtime()
                     f.write(now + ' event insert.\n')
+                t2gc_account.tweet(str(res), info[0])
 
     loop()
 #while True:

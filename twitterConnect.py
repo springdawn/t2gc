@@ -25,6 +25,9 @@ class TwitterConnect():
                               [\"\“\”\'\‘\’](.*?)[\"\“\”\'\‘\’]''', re.X)
     location_format = re.compile(u'l:(\S+)|(\S+)で')
     recurring_format = re.compile(u'(毎[日週])(\d{1,2})[回度]?繰り返し')
+    command = [
+        'delete'
+    ]
     # TODO: 繰り返しイベントフォーマット対応
 #    recurring_format = re.compile(u'(毎(?:日|週(?:[月火水木金土日]曜?)?)|平日)(\d{1,2})[回度]?繰り返し')
 
@@ -58,7 +61,7 @@ class TwitterConnect():
 
     def createTokenFile(self):
         print 'create Twitter OAuth token file...'
-        db = dbm.open(oauth_keyfile_path, 'n')
+        db = dbm.open(self.oauth_keyfile_path, 'n')
         self.consumer_key = db['consumer_key'] = raw_input('input consumer key :')
         self.consumer_secret = db['consumer_secret'] = raw_input('input consumer secret :')
         self.oauth_token, self.oauth_secret = oauth_dance('T2GoogleCalendar', self.consumer_key, self.consumer_secret)
@@ -76,7 +79,10 @@ class TwitterConnect():
                             tweet[u'text'].find('@tw2gc') >= 0):
                         event_info = self.analyzeTweet(tweet[u'text'])
                         if event_info:
-                            yield event_info
+                            tweet_info = {
+                                'user': tweet[u'user']['screen_name'],
+                                'id': tweet[u'id_str']}
+                            yield tweet_info, event_info
         except KeyboardInterrupt:
             now = nowtime()
             with open(logfile, 'a') as f:

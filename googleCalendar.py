@@ -125,7 +125,7 @@ class GoogleCalendar():
 
             print created_event['id']
             print event
-            return True
+            return created_event['id']
         except Exception:
             print 'error: event insertion'
             self.credentials.refresh(httplib2.Http())
