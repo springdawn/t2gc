@@ -6,7 +6,7 @@
     "permissions":[
         "contextMenus",
         "http://localhost/",
-        "tabs", "http://*/*", "https://*/*"
+        "tabs"
     ],
     "background":{
         "persistent":false,
