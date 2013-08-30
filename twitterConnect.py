@@ -16,10 +16,10 @@ class TwitterConnect():
         u'''d:(?:(\d{4})-)?(\d{2})-(\d{2})|(?:(\d{4})年)?(\d{1,2})月(\d{1,2})日
         |(?:今|明後?)日''', re.X)
     start_time_format = re.compile(
-        u'''s:(\d{2}):(\d{2})|(?:(\d{1,2})時(?:(\d{1,2})分)?
+        u'''s:(\d{2}):(\d{2})|(?:(\d{1,2})時(?:(\d{1,2})分|(半))?
         |(\d{1,2}):(\d{2}))から''', re.X)
     end_time_format = re.compile(u'''e:(\d{2}):(\d{2})
-                                 |(?:(\d{1,2})時(?:(\d{1,2})分)?
+                                 |(?:(\d{1,2})時(?:(\d{1,2})分|(半))?
                                  |(\d{1,2}):(\d{2}))まで''', re.X)
     title_format = re.compile(u'''(?:t:)?
                               [\"\“\”\'\‘\’](.*?)[\"\“\”\'\‘\’]''', re.X)
@@ -114,7 +114,8 @@ class TwitterConnect():
         if start_mat:
             for st in start_mat.groups():
                 if st:
-                    stl.append(int(st))
+                    stl.append(st)
+            print 'start', stl
             start_time = self.pickTime(stl, date)
             if start_time:
                 tweet_buf = tweet_buf[:start_mat.start()] + tweet_buf[start_mat.end():]
@@ -130,7 +131,7 @@ class TwitterConnect():
         else:
             for et in end_mat.groups():
                 if et:
-                    etl.append(int(et))
+                    etl.append(et)
             end_time = self.pickTime(etl, date)
             if not end_time:
                 return False
@@ -182,11 +183,16 @@ class TwitterConnect():
             return None
 
     def pickTime(self, time_ar, date_obj):
+        print time_ar
         try:
             if len(time_ar) == 2:
-                return date_obj.replace(hour=time_ar[0], minute=time_ar[1])
+                if time_ar[1] == u'半':
+                    return date_obj.replace(hour=int(time_ar[0]), minute=30)
+                else:
+                    return date_obj.replace(hour=int(time_ar[0]),
+                                            minute=int(time_ar[1]))
             else:
-                return date_obj.replace(hour=time_ar[0], minute=0)
+                return date_obj.replace(hour=int(time_ar[0]), minute=0)
         except:
             return None
 
