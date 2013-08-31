@@ -8,6 +8,7 @@ class GetHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         getpath = urlparse(self.path)
         print urllib2.unquote(getpath.query)
 
-httpd = SimpleHTTPServer.BaseHTTPServer.HTTPServer(('localhost', 8000), GetHandler)
+httpd = SimpleHTTPServer.BaseHTTPServer.HTTPServer(
+    ('localhost', 8000), GetHandler)
 print httpd.server_name, httpd.server_port
 httpd.serve_forever()

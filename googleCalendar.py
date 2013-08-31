@@ -28,9 +28,12 @@ class GoogleCalendar():
         else:
             print 'create Google OAuth file...'
             db = dbm.open(oauth_keyfile_path, 'n')
-            client_id = db['client_id'] = raw_input('input client_id :')
-            client_secret = db['client_secret'] = raw_input('input client_secret :')
-            developer_key = db['developer_key'] = raw_input('input developer key :')
+            client_id = raw_input('input client_id :')
+            client_secret = raw_input('input client_secret :')
+            developer_key = raw_input('input developer key :')
+            db['client_id'] = client_id
+            db['client_secret'] = client_secret
+            db['developer_key'] = developer_key
         db.close()
 
         # Set up a Flow object to be used if we need to authenticate. This
@@ -102,7 +105,8 @@ class GoogleCalendar():
             'summary': event_info['title'],
             'location': event_info['location'],
             'start': {
-                'dateTime': event_info['start'] if 'start' in event_info else None,
+                'dateTime': (event_info['start']
+                             if 'start' in event_info else None),
                 'date': event_info['date'] if 'date' in event_info else None,
                 'timeZone': timezone
             },

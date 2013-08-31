@@ -62,9 +62,12 @@ class TwitterConnect():
     def createTokenFile(self):
         print 'create Twitter OAuth token file...'
         db = dbm.open(self.oauth_keyfile_path, 'n')
-        self.consumer_key = db['consumer_key'] = raw_input('input consumer key :')
-        self.consumer_secret = db['consumer_secret'] = raw_input('input consumer secret :')
-        self.oauth_token, self.oauth_secret = oauth_dance('T2GoogleCalendar', self.consumer_key, self.consumer_secret)
+        self.consumer_key = raw_input('input consumer key :')
+        self.consumer_secret = raw_input('input consumer secret :')
+        self.oauth_token, self.oauth_secret = oauth_dance(
+            'T2GoogleCalendar', self.consumer_key, self.consumer_secret)
+        db['consumer_key'] = self.consumer_key
+        db['consumer_secret'] = self.consumer_secret
         db['oauth_token'] = self.oauth_token
         db['oauth_secret'] = self.oauth_secret
         db.close()
@@ -118,7 +121,8 @@ class TwitterConnect():
             print 'start', stl
             start_time = self.pickTime(stl, date)
             if start_time:
-                tweet_buf = tweet_buf[:start_mat.start()] + tweet_buf[start_mat.end():]
+                tweet_buf = (tweet_buf[:start_mat.start()] +
+                             tweet_buf[start_mat.end():])
         else:
             start_time = None
         #終了時間
@@ -157,9 +161,12 @@ class TwitterConnect():
                                              else (None, None))
         return {
             'title': title,
-            'start': start_time.strftime('%Y-%m-%dT%H:%M:%S%z') if start_time else None,
-            'end': end_time.strftime('%Y-%m-%dT%H:%M:%S%z') if end_time else None,
-            'date': date.strftime('%Y-%m-%d') if not start_time and not end_time else None,
+            'start': (start_time.strftime('%Y-%m-%dT%H:%M:%S%z')
+                      if start_time else None),
+            'end': (end_time.strftime('%Y-%m-%dT%H:%M:%S%z')
+                    if end_time else None),
+            'date': (date.strftime('%Y-%m-%d')
+                     if not start_time and not end_time else None),
             'location': location,
             'recurrence': {'freq': recurrence_freq, 'count': recurrence_count}
         }
