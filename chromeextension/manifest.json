@@ -6,20 +6,21 @@
     "permissions":[
         "contextMenus",
         "http://localhost/",
-        "tabs"
+        "tabs",
+        "notifications"
     ],
     "background":{
         "persistent":false,
-        "scripts":["jquery-2.0.3.min.js","t2gc.js"]
+        "scripts":["js/jquery-2.0.3.min.js","js/t2gc.js"]
     },
     "browser_action":{
         "default_title":"T2G",
-        "default_popup":"popup.html"
+        "default_popup":"html/popup.html"
     },
     "content_scripts":[
         {
             "matches":["<all_urls>"],
-            "js":["content.js"]
+            "js":["js/content.js"]
         }
     ]
 }
