@@ -1,0 +1,26 @@
+body {
+    width: 380px;
+    height: 220px;
+    padding: 10px;
+}
+
+#ui-datepicker-div {
+    /*zoom: 60%;*/
+/*    -webkit-transform: scale(0.6) translate(-70px,-70px);*/
+/*    margin-top: 12%;
+    margin-left: 2%;*/
+}
+.ui-datepicker {
+    font-size: 70%;
+}
+#data {
+    display: none;
+}
+input {
+    float: right;
+    width: 70%;
+}
+button {
+    margin-left: 35%;
+    width: 30%
+}

@@ -28,8 +28,9 @@ function getSelect(done) {
 }
 
 $(function() {
-    $('#data').focus();
     $('#date').datepicker({dateFormat: 'yy-mm-dd'});
+    $('#start_time').timepicker({stepMinute: 5, hourGrid:3, minuteGrid:15});
+    $('#end_time').timepicker({stepMinute: 5});
 //    $('#date').datepicker('setDate', '2013-09-01');
     //$('#date').datepicker();
 });
