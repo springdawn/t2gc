@@ -29,7 +29,17 @@ class TwitterConnect():
         'delete'
     ]
     # TODO: 繰り返しイベントフォーマット対応
-#    recurring_format = re.compile(u'(毎(?:日|週(?:[月火水木金土日]曜?)?)|平日)(\d{1,2})[回度]?繰り返し')
+    recurring_format = re.compile(u'''(毎(?:日|週(?:[月火水木金土日]曜?)?)|平日)
+                                  (\d{1,2})[回度]?繰り返し''', re.X)
+    weekday = {
+        u'月': 'MO',
+        u'火': 'TU',
+        u'水': 'WE',
+        u'木': 'TH',
+        u'金': 'FR',
+        u'土': 'SA',
+        u'日': 'SU'
+    }
 
     def __init__(self):
         self.oauth_keyfile_path = (os.path.dirname(os.path.abspath(__file__)) +
