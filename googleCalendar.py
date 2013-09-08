@@ -116,7 +116,8 @@ class GoogleCalendar():
                 'timeZone': timezone
             },
         }
-        if (event_info['recurrence']['freq'] and
+        if ('reccurrence' in event_info and
+            event_info['recurrence']['freq'] and
                 event_info['recurrence']['count']):
             recurrence = ('RRULE:FREQ=' + event_info['recurrence']['freq'] +
                           ';COUNT=' + event_info['recurrence']['count'])
